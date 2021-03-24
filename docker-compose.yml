@@ -15,37 +15,39 @@ services:
       - "PHYSICAL_IP:172.16.30.165"
     networks:
       - net-nginx
-      - net-node
+      #- net-node-dfiapi
     depends_on:
-      - node
+      - node-dfiapi
       - redis
     dns:
       - 8.8.8.8
       - 9.9.9.9
 
-  node:
+  node-dfiapi:
+    #image: node:15.2.0-alpine
     build: ./build/node/
-    container_name: node
     working_dir: /home/node/app
-    environment:
-      - NODE_ENV=development
+    container_name: node-dfiapi
+    expose:
+      - 7012
     volumes:
-      - ./wwwroot/:/home/node/app:rw
-    extra_hosts:
-      - "PHYSICAL_IP:172.16.30.165"
+      - ./wwwroot/dfi-api.zhuiyi.ai:/home/node/app:rw
+    command: "npm run dev"
     networks:
-      - net-node
+      - net-node-dfiapi
       - net-mysql
       - net-redis
     ports:
       - "7012:7012"
-      - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
 
   mysql:
     image: mysql:5.6.40
     container_name: mysql
     ports:
-      - "3066:3066"
+      - "3306:3066"
     volumes:
       - ./conf/mysql/etc/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
       - ./db/mysql/database/:/var/lib/mysql/:rw
@@ -81,10 +83,10 @@ services:
     #   #     cpus: '0.01'     # 5%
     #   #     memory: 20M      # 内存最大M
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
 
 networks:
   net-redis:
-  net-node:
+  net-node-dfiapi:
   net-mysql:
   net-nginx:

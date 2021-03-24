@@ -3,4 +3,4 @@
 db
 wwwlogs
 wwwroot
-config/nginx/config.d
+conf/nginx/conf.d/*
