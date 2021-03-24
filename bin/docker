@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# https://download.docker.com/linux/centos/docker-ce.repo
+MIRRORS="https://mirrors.ustc.edu.cn/docker-ce/linux/centos/docker-ce.repo"
+VERSION="docker-ce-17.09.0.ce"
+
+function INIT()
+{
+    # 添加Docker软件包源
+    sudo yum-config-manager --add-repo $MIRRORS
+    #关闭测试版本list（只显示稳定版）
+    sudo yum-config-manager --enable docker-ce-edge
+    sudo yum-config-manager --enable docker-ce-test
+    # 更新yum包索引
+    yum makecache fast
+}
+
+function INSTALL()
+{
+    yum install -y yum-utils device-mapper-persistent-data lvm2
+    yum install -y $VERSION
+}
+
+function LIST()
+{
+    yum list docker-ce --showduplicates|sort -r  
+}
+
+while getopts "m:v:h" arg #选项后面的冒号表示该选项需要参数
+do
+    case $arg in
+            m)          #--mirrors
+               $MIRRORS=$OPTARG
+            ;;
+            v)
+               $VERSION=$OPTARG
+            ;;
+            h)
+               echo "Usage: $0 {install|list} -m -v"
+               echo " -m mirrors 设置的源为 $MIRRORS"
+               echo " -v 安装版本 $VERSION"
+               exit 1 
+            ;;
+            ?)  #当有不认识的选项的时候arg为?
+        echo "unkonw argument"
+    exit 1
+    ;;
+    esac
+done
+
+
+case "$1" in
+    install)
+        echo -n "Install $VERSION... "
+        INIT
+        INSTALL
+        exit 1 
+        ;;
+    list)
+        echo -n "Docker Stable List... "
+        INIT
+        LIST
+        exit 1 
+        ;;
+esac

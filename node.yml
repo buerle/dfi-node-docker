@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  node:
+    image: "node:15"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./wwwroot/:/home/node/app:rw
+    expose:
+      - "8081"
+    command: "npm config set registry https://registry.npm.taobao.org"
+    extra_hosts:
+      - "PHYSICAL_IP:172.16.30.165"
+    networks:
+      - net-node
+networks:
+  net-node:

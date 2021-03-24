@@ -1,0 +1,6 @@
+.*
+!.gitignore
+db
+wwwlogs
+wwwroot
+config/nginx/config.d

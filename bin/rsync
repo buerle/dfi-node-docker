@@ -1,0 +1,19 @@
+#!/bin/bash
+# 默认值
+DOMAIN=docker.ringle.ai;
+ROOT_DIR=$(cd "$(dirname "$0")"; cd ..; pwd)
+RSYNC_PATH="172.10.10.244::docker/$DOMAIN";
+
+exclude=(\
+    '--include=vendor'\
+    '--exclude="core.[0-9]*"'\
+    '--exclude=*.log'\
+    '--exclude=*.psd'\
+    '--exclude=*.zip'\
+    '--exclude=*.rar'\
+    '--exclude=*.pdf'\
+    '--exclude=*.bak'\
+    '--max-size=10m'\
+)
+exclude=$(IFS=' '; echo "${exclude[*]}");
+rsync -avP -c --port=873  $ROOT_DIR/ $RSYNC_PATH $exclude
