@@ -37,6 +37,8 @@ services:
       - net-node-dfiapi
       - net-mysql
       - net-redis
+    expose:
+      - "7012"
     ports:
       - "7012:7012"
     depends_on:
@@ -46,6 +48,8 @@ services:
   mysql:
     image: mysql:5.6.40
     container_name: mysql
+    expose:
+      - "3306"
     ports:
       - "3306:3066"
     volumes:
@@ -82,8 +86,10 @@ services:
     #   #   reservations:      # 保留资源
     #   #     cpus: '0.01'     # 5%
     #   #     memory: 20M      # 内存最大M
+    expose:
+      - "6379"
     ports:
-      - "127.0.0.1:6379:6379"
+      - "172.16.30.165:6379:6379"
 
 networks:
   net-redis:
