@@ -6,6 +6,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "9000:9000"
     volumes:
       - ./wwwroot/:/var/www/html/:rw
       - ./logs/wwwlogs/:/var/log/wwwlogs/:rw
@@ -32,6 +33,8 @@ services:
       - 7012
     volumes:
       - ./wwwroot/dfi-api.zhuiyi.ai:/home/node/app:rw
+    environment:
+      - EGG_SERVER_ENV=test
     command: "npm run dev"
     networks:
       - net-node-dfiapi
@@ -40,7 +43,7 @@ services:
     expose:
       - "7012"
     ports:
-      - "7012:7012"
+      - "172.16.30.165:7012:7012"
     depends_on:
       - mysql
       - redis
