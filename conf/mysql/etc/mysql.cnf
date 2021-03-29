@@ -12,8 +12,21 @@ default-storage-engine  = InnoDB
 default-authentication-plugin   = mysql_native_password
 character-set-server    = utf8mb4
 collation-server        = utf8mb4_unicode_ci
-init_connect            ='SET NAMES utf8mb4'
+init_connect            = 'SET NAMES utf8mb4'
+max_connections         = 1024
 
+skip-external-locking
+key_buffer_size = 256M
+max_allowed_packet = 1M
+table_open_cache = 64
+sort_buffer_size = 512K
+net_buffer_length = 8K
+read_buffer_size = 256K
+read_rnd_buffer_size = 512K
+myisam_sort_buffer_size = 8M
+thread_cache_size = 8
+query_cache_size = 8M
+tmp_table_size = 16M
 
 ## disable-log-bin
 skip-character-set-client-handshake
