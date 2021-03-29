@@ -13,7 +13,7 @@ services:
       - ./conf/nginx/conf.d:/etc/nginx/conf.d/:ro
       - ./conf/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     extra_hosts:
-      - "PHYSICAL_IP:172.16.30.165"
+      - "PHYSICAL_IP:172.16.30.166"
     networks:
       - net-nginx
       #- net-node-dfiapi
@@ -33,9 +33,11 @@ services:
       - 7012
     volumes:
       - ./wwwroot/dfi-api.zhuiyi.ai:/home/node/app:rw
+      - /etc/passwd:/etc/passwd
+      - /home/www/:/home/www
     environment:
-      - EGG_SERVER_ENV=test
-    command: "npm run dev"
+      - EGG_SERVER_ENV=prod
+    command: "npm run prod"
     networks:
       - net-node-dfiapi
       - net-mysql
@@ -43,7 +45,7 @@ services:
     expose:
       - "7012"
     ports:
-      - "172.16.30.165:7012:7012"
+      - "172.16.30.166:7012:7012"
     depends_on:
       - mysql
       - redis
@@ -54,7 +56,7 @@ services:
     expose:
       - "3306"
     ports:
-      - "3306:3066"
+      - "3306:3306"
     volumes:
       - ./conf/mysql/etc/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
       - ./db/mysql/database/:/var/lib/mysql/:rw
@@ -92,7 +94,7 @@ services:
     expose:
       - "6379"
     ports:
-      - "172.16.30.165:6379:6379"
+      - "172.16.30.166:6379:6379"
 
 networks:
   net-redis:
